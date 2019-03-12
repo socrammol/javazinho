@@ -6,20 +6,21 @@
 package lexer;
 
 import java.io.*;
+import static java.lang.System.exit;
 
 /**
  *
  * @author gustavo
  */
 public class LexerAluno {
-    
+   private static int n_Erros;
    private static final int END_OF_FILE = -1; // contante para fim do arquivo
    private static int lookahead = 0; // armazena o último caractere lido do arquivo	
    public static int n_line = 1; // contador de linhas
    public static int n_column = 1; // contador de linhas
    private RandomAccessFile instance_file; // referencia para o arquivo
    private static TS tabelaSimbolos; // tabela de simbolos
-    
+   
    public LexerAluno(String input_data) {
 		
       // Abre instance_file de input_data
@@ -105,10 +106,17 @@ public class LexerAluno {
             System.out.println("Erro na leitura do arquivo");
             System.exit(3);
          }
+         if (n_Erros >= 5){
+             System.out.println(" o processo de compilação foi interrompido devido" + 
+                     "ao grande numero de erro :");
+             exit(1);
+             
+           }
             
          // movimentacao do automato
          switch(estado) {
             // estado 1
+             
             case 1:
                if(lookahead == END_OF_FILE)
                   return new Token(Tag.EOF, "EOF", n_line, n_column);
@@ -186,13 +194,18 @@ public class LexerAluno {
                }
                else {
                   sinalizaErroLexico("Caractere invalido " + c + " na linha " + n_line + " e coluna " + n_column);
-                  
+                  n_Erros ++;
                }
                break;
             case 5:
                 if (c == '/'){
                     estado = 16;
                 }
+                else if(c == '*'){
+                estado = 18;
+                
+                }
+                
                 else{
                     retornaPonteiro();
                     return new Token(Tag.RELOP_DIV, "/", n_line, n_column);
@@ -242,7 +255,10 @@ public class LexerAluno {
             case 16:
                 if(c == '\n'){
                    estado = 1;
+                   n_line ++;
                 }
+                
+                
                 break;
             case 17:
                if(Character.isLetterOrDigit(c) || c == '_' ) {
@@ -260,6 +276,21 @@ public class LexerAluno {
                   
                }
                break;
+            case 18:   
+                //em produção
+                if(c == '*'){
+                    estado = 20;
+                }
+                else if (c == '\n'){
+                    n_line ++;
+                }
+                else if (lookahead == END_OF_FILE){
+                   sinalizaErroLexico("Comentario deve ser fechado com */  " + " na linha " + n_line + " e coluna " + n_column);
+                   n_Erros ++;
+                   return new Token(Tag.EOF,lexema.toString(),n_line,n_column);
+                   
+                }
+                break;
             case 19:
                if(Character.isDigit(c)) {
                   lexema.append(c);
@@ -275,6 +306,19 @@ public class LexerAluno {
                   return new Token(Tag.INTEGER, lexema.toString(), n_line, n_column);
                }
                break;
+            case 20:
+                if (c == '/'){
+                    estado = 1;
+                }
+                else if (c == '\n'){
+                    n_line ++;
+                }
+                else if (lookahead == END_OF_FILE){
+                   sinalizaErroLexico("Comentario deve ser fechado com */  " + " na linha " + n_line + " e coluna " + n_column);
+                   n_Erros ++;
+                   return new Token(Tag.EOF,lexema.toString(),n_line,n_column);
+                }
+                break;
             case 21:
                // [TODO] continuar logica para reconhecimento de DOUBLE
                 if(Character.isDigit(c)) {
@@ -288,15 +332,24 @@ public class LexerAluno {
                break;
             case 22:
                // [TODO] continuar logica para reconhecimento de DOUBLE
+                
                break;
             case 24:
                 if (c == '"'){
-                    estado = 25;
+                    estado = 1;
                     return new Token (Tag.STRING, lexema.toString(), n_line, n_column);
+                }
+                else if (c == '\n'){
+                    sinalizaErroLexico(" string não fechada antes de quebra de linha  " + " na linha " + n_line + " e coluna " + n_column);
+                    n_line ++;
+                    n_column = 1;
+                    estado =1 ;
+                    n_Erros ++;
                 }
                 else{
                     lexema.append(c);
                 }
+                break;
             case 25:
                // [TODO] continuar logica para reconhecimento de STRING
                break;
