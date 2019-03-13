@@ -71,6 +71,7 @@ public class TS {
         
         word = new Token(Tag.KW, "false", 0, 0);
         this.tabelaSimbolos.put("false", word);
+        
     }
     
     public void put(String s, Token w) {

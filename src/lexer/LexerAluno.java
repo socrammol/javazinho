@@ -156,6 +156,14 @@ public class LexerAluno {
                   estado = 5;
                   
                }
+               else if(c == '&') {
+                  estado = 2;
+                  
+               }
+               else if(c == '|') {
+                  estado = 3;
+                  
+               }
                else if(c == '*') {
                   //estado = 4;
                   return new Token(Tag.RELOP_MULT, "*", n_line, n_column);
@@ -197,6 +205,24 @@ public class LexerAluno {
                   n_Erros ++;
                }
                break;
+            case 2:
+                if(c == '&'){
+                    return new Token(Tag.RELOP_AND, "&&", n_line,n_column);
+                }
+                else{
+                    sinalizaErroLexico("Caractere invalido " + c + " na linha " + n_line + " e coluna " + n_column);
+                    n_Erros ++;
+                }
+                break;
+            case 3:
+                if(c == '|'){
+                    return new Token(Tag.RELOP_OR, "||", n_line,n_column);
+                }
+                else{
+                    sinalizaErroLexico("Caractere invalido " + c + " na linha " + n_line + " e coluna " + n_column);
+                    n_Erros ++;
+                }
+                break;
             case 5:
                 if (c == '/'){
                     estado = 16;
