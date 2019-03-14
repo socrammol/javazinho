@@ -10,10 +10,11 @@ import static java.lang.System.exit;
 
 /**
  *
- * @author gustavo
+ * @author Marcos mol
  */
 public class LexerAluno {
-   private static int n_Erros;
+   private static int n_Char = 0; //contador de char para string
+   private static int n_Erros = 0;//contador de erros lexicos
    private static final int END_OF_FILE = -1; // contante para fim do arquivo
    private static int lookahead = 0; // armazena o último caractere lido do arquivo	
    public static int n_line = 1; // contador de linhas
@@ -84,7 +85,7 @@ public class LexerAluno {
     */
 
     // Obtém próximo token: esse metodo simula um AFD
-   public Token proxToken() {
+        public Token proxToken() {
 
       StringBuilder lexema = new StringBuilder();
       int estado = 1;
@@ -361,9 +362,16 @@ public class LexerAluno {
                 
                break;
             case 24:
-                if (c == '"'){
-                    estado = 1;
-                    return new Token (Tag.STRING, lexema.toString(), n_line, n_column);
+                    if (c == '"' ){
+                        if(n_Char == 0){
+                    sinalizaErroLexico(" string vazia  " + " na linha " + n_line + " e coluna " + n_column);
+                    n_line ++;
+                    n_column = 1;
+                    estado = 1;}
+                        else{
+                            retornaPonteiro();
+                            estado = 25;
+                        }
                 }
                 else if (c == '\n'){
                     sinalizaErroLexico(" string não fechada antes de quebra de linha  " + " na linha " + n_line + " e coluna " + n_column);
@@ -372,12 +380,21 @@ public class LexerAluno {
                     estado =1 ;
                     n_Erros ++;
                 }
-                else{
+                else {
+                    
                     lexema.append(c);
+                    n_Char ++;
                 }
                 break;
             case 25:
                // [TODO] continuar logica para reconhecimento de STRING
+                if(c == '"'){
+                    estado = 1;
+                    n_Char = 0;
+                    return new Token (Tag.STRING, lexema.toString(), n_line, n_column);
+                }
+                
+                
                break;
          } // fim switch
       } // fim while
