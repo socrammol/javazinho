@@ -268,7 +268,7 @@ public class LexerAluno {
                   return new Token(Tag.RELOP_LT, "<", n_line, n_column);
                }
             case 7:
-                if(Character.isLetter(c)|| c == '(' || c == '<'|| c == '>'|| c == '='|| c == '+'|| c == '-'|| c == '|'|| c == '&'|| c == '!'|| c == '/'){
+                if(auxNegativo == Tag.RELOP_MULT){
                      retornaPonteiro();
                      estado = 1;
                      return new Token(Tag.RELOP_UNNE,"-",n_line,n_column);
