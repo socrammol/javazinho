@@ -13,6 +13,7 @@ import static java.lang.System.exit;
  * @author Marcos mol
  */
 public class LexerAluno {
+   private Tag auxNegativo;
    private static int n_Char = 0; //contador de char para string
    private static int n_Erros = 0;//contador de erros lexicos
    private static final int END_OF_FILE = -1; // contante para fim do arquivo
@@ -90,6 +91,8 @@ public class LexerAluno {
       StringBuilder lexema = new StringBuilder();
       int estado = 1;
       char c;
+     
+      
 		
       while(true) {
          c = '\u0000'; // null char
@@ -167,15 +170,18 @@ public class LexerAluno {
                }
                else if(c == '*') {
                   //estado = 4;
+                  auxNegativo = Tag.RELOP_MULT;
                   return new Token(Tag.RELOP_MULT, "*", n_line, n_column);
+                  
                }
                else if(c == '+') {
                   //estado = 2;
+                  auxNegativo = Tag.RELOP_SUM;
                   return new Token(Tag.RELOP_SUM, "+", n_line, n_column);
                }
                else if(c == '-') {
-                  //estado = 3;
-                  return new Token(Tag.RELOP_MINUS, "-", n_line, n_column);
+                  
+                  estado = 4;                
                }
                else if(c == ';') {
                   //estado = 27;
@@ -183,10 +189,12 @@ public class LexerAluno {
                }
                else if(c == '(') {
                   //estado = 28;
+                  auxNegativo = Tag.SMB_OP;
                   return new Token(Tag.SMB_OP, "(", n_line, n_column);
                }
                else if(c == ')') {
                   //estado = 29;
+                  auxNegativo = Tag.SMB_CP;
                   return new Token(Tag.SMB_CP, ")", n_line, n_column);
                }
                else if(c == '{') {
@@ -224,6 +232,17 @@ public class LexerAluno {
                     n_Erros ++;
                 }
                 break;
+            case 4:
+                if(Character.isDigit(c) ){
+                    estado = 1;
+                    retornaPonteiro();
+                    return new Token(Tag.RELOP_MINUS, "-", n_line, n_column);
+                }
+                else {
+                    retornaPonteiro();
+                    estado = 7;
+                }
+                break;
             case 5:
                 if (c == '/'){
                     estado = 16;
@@ -235,7 +254,7 @@ public class LexerAluno {
                 
                 else{
                     retornaPonteiro();
-                    return new Token(Tag.RELOP_DIV, "/", n_line, n_column);
+                   return new Token(Tag.RELOP_DIV, "/", n_line, n_column);
                 }
                 break;
             case 6:
@@ -248,7 +267,17 @@ public class LexerAluno {
                   retornaPonteiro();
                   return new Token(Tag.RELOP_LT, "<", n_line, n_column);
                }
-              
+            case 7:
+                if(Character.isLetter(c)|| c == '(' || c == '<'|| c == '>'|| c == '='|| c == '+'|| c == '-'|| c == '|'|| c == '&'|| c == '!'|| c == '/'){
+                     retornaPonteiro();
+                     estado = 1;
+                     return new Token(Tag.RELOP_UNNE,"-",n_line,n_column);
+                }
+                else{
+                    sinalizaErroLexico("Caractere invalido " + c + " na linha " + n_line + " e coluna " + n_column);
+                    n_Erros ++;}
+                break;
+                    
             case 9:
                if(c == '=') {
                   //estado = 10;
@@ -263,8 +292,7 @@ public class LexerAluno {
                if (c == '=') {
                   //estado = 13;
                   return new Token(Tag.RELOP_EQ, "==", n_line, n_column);
-               }
-               else {
+               }               else {
                   //estado = 14;
                   retornaPonteiro();
                   return new Token(Tag.RELOP_ASSIGN, "=", n_line, n_column);
@@ -297,7 +325,8 @@ public class LexerAluno {
                   retornaPonteiro();
                   Token token = tabelaSimbolos.retornaToken(lexema.toString());
                   if  (token == null ){
-                      return new Token(Tag.ID, lexema.toString(), n_line, n_column);
+                      auxNegativo = Tag.ID;
+                     return new Token(Tag.ID, lexema.toString(), n_line, n_column);
                   }
                   return token;
                   
@@ -330,6 +359,7 @@ public class LexerAluno {
                else {
                   //estado = 20;
                   retornaPonteiro();
+                  auxNegativo = Tag.INTEGER;
                   return new Token(Tag.INTEGER, lexema.toString(), n_line, n_column);
                }
                break;
@@ -354,6 +384,7 @@ public class LexerAluno {
                }
                 else{
                     retornaPonteiro();
+                    auxNegativo = Tag.FLOAT;
                     return new Token(Tag.FLOAT, lexema.toString(), n_line, n_column);
                 }
                break;
@@ -391,6 +422,7 @@ public class LexerAluno {
                 if(c == '"'){
                     estado = 1;
                     n_Char = 0;
+                    auxNegativo = Tag.STRING;
                     return new Token (Tag.STRING, lexema.toString(), n_line, n_column);
                 }
                 
