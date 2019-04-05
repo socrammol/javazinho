@@ -169,13 +169,13 @@ public class LexerAluno {
                   
                }
                else if(c == '*') {
-                  //estado = 4;
+                  estado = 8;
                   auxNegativo = Tag.RELOP_MULT;
                   return new Token(Tag.RELOP_MULT, "*", n_line, n_column);
                   
                }
                else if(c == '+') {
-                  //estado = 2;
+                  estado = 36;
                   auxNegativo = Tag.RELOP_SUM;
                   return new Token(Tag.RELOP_SUM, "+", n_line, n_column);
                }
@@ -184,16 +184,16 @@ public class LexerAluno {
                   estado = 4;                
                }
                else if(c == ';') {
-                  //estado = 27;
+                  estado = 37;
                   return new Token(Tag.SMB_SEMICOLON, ";", n_line, n_column);
                }
                else if(c == '(') {
-                  //estado = 28;
+                  estado = 38;
                   auxNegativo = Tag.SMB_OP;
                   return new Token(Tag.SMB_OP, "(", n_line, n_column);
                }
                else if(c == ')') {
-                  //estado = 29;
+                  estado = 39;
                   auxNegativo = Tag.SMB_CP;
                   return new Token(Tag.SMB_CP, ")", n_line, n_column);
                }
@@ -216,6 +216,7 @@ public class LexerAluno {
                break;
             case 2:
                 if(c == '&'){
+                    estado = 41;
                     return new Token(Tag.RELOP_AND, "&&", n_line,n_column);
                 }
                 else{
