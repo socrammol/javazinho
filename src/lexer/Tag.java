@@ -38,6 +38,7 @@ public enum Tag {
     SMB_CB,         // }
     SMB_COMMA,      // ,
     SMB_SEMICOLON,  // ;
+    SMB_NULL,       // zerar auxnegativo
     
     
     //identificador
@@ -52,4 +53,6 @@ public enum Tag {
     
     // palavra reservada
     KW;
+    //
+    
 }

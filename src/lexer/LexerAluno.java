@@ -129,6 +129,7 @@ public class LexerAluno {
                   if (c == '\n'){
                       n_line ++;
                       n_column = 1;
+                     auxNegativo = Tag.SMB_NULL;
                       
                   }
                   else if (c== '\t'){
@@ -234,14 +235,15 @@ public class LexerAluno {
                 }
                 break;
             case 4:
-                if(Character.isDigit(c) ){
+                if(auxNegativo == Tag.FLOAT||auxNegativo == Tag.ID||auxNegativo == Tag.INTEGER||auxNegativo == Tag.RELOP_MINUS||auxNegativo == Tag.SMB_OP||auxNegativo == Tag.SMB_CP){
                     retornaPonteiro();
                     estado = 51;
-                    return new Token(Tag.RELOP_MINUS, "-", n_line, n_column);
+                    return new Token(Tag.RELOP_UNNE, "-", n_line, n_column);
                 }
                 else {
                     retornaPonteiro();
-                    estado = 7;
+                     estado = 50;
+                     return new Token(Tag.RELOP_MINUS,"-",n_line,n_column);
                 }
                 break;
             case 5:
@@ -268,17 +270,6 @@ public class LexerAluno {
                   retornaPonteiro();
                   return new Token(Tag.RELOP_LT, "<", n_line, n_column);
                }
-            case 7:
-                if(auxNegativo == Tag.RELOP_MULT){
-                     retornaPonteiro();
-                     estado = 1;
-                     estado = 50;
-                     return new Token(Tag.RELOP_UNNE,"-",n_line,n_column);
-                }
-                else{
-                    sinalizaErroLexico("Caractere invalido " + c + " na linha " + n_line + " e coluna " + n_column);
-                    n_Erros ++;}
-                break;
                     
             case 9:
                if(c == '=') {

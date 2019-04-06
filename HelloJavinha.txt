@@ -1,8 +1,3 @@
-*
-/*asdasd*/
-sdasdsa
-int 
-@id
-float 
-void 
-main
+1-
+1.1
+-
