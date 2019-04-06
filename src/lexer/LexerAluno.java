@@ -180,7 +180,6 @@ public class LexerAluno {
                   return new Token(Tag.RELOP_SUM, "+", n_line, n_column);
                }
                else if(c == '-') {
-                  
                   estado = 4;                
                }
                else if(c == ';') {
@@ -216,7 +215,7 @@ public class LexerAluno {
                break;
             case 2:
                 if(c == '&'){
-                    estado = 41;
+                    estado = 42;
                     return new Token(Tag.RELOP_AND, "&&", n_line,n_column);
                 }
                 else{
@@ -226,6 +225,7 @@ public class LexerAluno {
                 break;
             case 3:
                 if(c == '|'){
+                    estado = 34;
                     return new Token(Tag.RELOP_OR, "||", n_line,n_column);
                 }
                 else{
@@ -235,8 +235,8 @@ public class LexerAluno {
                 break;
             case 4:
                 if(Character.isDigit(c) ){
-                    estado = 1;
                     retornaPonteiro();
+                    estado = 51;
                     return new Token(Tag.RELOP_MINUS, "-", n_line, n_column);
                 }
                 else {
@@ -260,11 +260,11 @@ public class LexerAluno {
                 break;
             case 6:
                if(c == '=') {
-                  //estado = 7;
+                  estado = 44;
                   return new Token(Tag.RELOP_LE, "<=", n_line, n_column);
                }
                else {
-                  //estado = 8;
+                  estado = 47;
                   retornaPonteiro();
                   return new Token(Tag.RELOP_LT, "<", n_line, n_column);
                }
@@ -272,6 +272,7 @@ public class LexerAluno {
                 if(auxNegativo == Tag.RELOP_MULT){
                      retornaPonteiro();
                      estado = 1;
+                     estado = 50;
                      return new Token(Tag.RELOP_UNNE,"-",n_line,n_column);
                 }
                 else{
@@ -281,31 +282,32 @@ public class LexerAluno {
                     
             case 9:
                if(c == '=') {
-                  //estado = 10;
+                  estado = 45;
                   return new Token(Tag.RELOP_GE, ">=", n_line, n_column);
                }
                else {
-                  //estado = 11;
+                  estado = 46;
                   retornaPonteiro();
                   return new Token(Tag.RELOP_GT, ">", n_line, n_column);
                }
             case 12:
                if (c == '=') {
-                  //estado = 13;
+                  estado = 52;
                   return new Token(Tag.RELOP_EQ, "==", n_line, n_column);
                }               else {
-                  //estado = 14;
+                  estado = 14;
                   retornaPonteiro();
                   return new Token(Tag.RELOP_ASSIGN, "=", n_line, n_column);
                }
             case 15:
                if( c == '=') {
-                  //estado = 16;
+                  estado = 54;
                   return new Token(Tag.RELOP_NE, "!=", n_line, n_column);
                }
                
                else {
                   retornaPonteiro();
+                  estado =53;
                   return new Token(Tag.RELOP_UNNE, "!", n_line , n_column);
                }
             case 16:
@@ -358,7 +360,7 @@ public class LexerAluno {
                   estado = 21;
                }
                else {
-                  //estado = 20;
+                  estado = 53;
                   retornaPonteiro();
                   auxNegativo = Tag.INTEGER;
                   return new Token(Tag.INTEGER, lexema.toString(), n_line, n_column);
@@ -385,6 +387,7 @@ public class LexerAluno {
                }
                 else{
                     retornaPonteiro();
+                    estado = 56;
                     auxNegativo = Tag.FLOAT;
                     return new Token(Tag.FLOAT, lexema.toString(), n_line, n_column);
                 }
