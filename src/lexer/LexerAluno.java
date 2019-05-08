@@ -37,6 +37,14 @@ public class LexerAluno {
          System.out.println("Erro do programa ou falha da Tabela de Simbolos\n" + e);
          System.exit(2);
       }
+      tabelaSimbolos = new TS(); // tabela de simbolos
+   }
+   
+   public void printTS() {
+		System.out.println("");
+      System.out.println("--------Tabela de Simbolos--------");
+      System.out.println(tabelaSimbolos.toString());  
+      System.out.println();
    }
     
    // Fecha instance_file de input_data
@@ -245,7 +253,6 @@ public class LexerAluno {
                      estado = 50;
                      return new Token(Tag.RELOP_MINUS,"-",n_line,n_column);
                 }
-                break;
             case 5:
                 if (c == '/'){
                     estado = 16;
@@ -430,7 +437,7 @@ public class LexerAluno {
     /**
      * @param args the command line arguments
      */
-   public static void main(String[] args) {
+   /*public static void main(String[] args) {
       LexerAluno lexer = new LexerAluno("HelloJavinha.txt"); // recebe o programa fonte para analise
       Token token;
       tabelaSimbolos = new TS();
@@ -452,5 +459,5 @@ public class LexerAluno {
       System.out.println("");
       System.out.println("Tabela de simbolos:");
       System.out.println(tabelaSimbolos.toString());
-   } 
+   } */
 }
