@@ -1,0 +1,27 @@
+program TestePasc1
+
+	num v@rnum1, varnum2;
+	char varchar1;
+	char varchar2;
+	char varchar3;
+
+	{
+		varnum1 = 4; 
+		varnum2 = 6.a;
+		varchar1 = 'abc';
+		varchar2 = 'a';
+
+		if(varchar1 == varchar2){
+			varnum1 = varnum2;
+			varnum2 = 3 * varnum1;
+		}	
+
+		while(varnum1 >= varnum2){
+			varchar3 = 'c';
+		} 
+
+		read varchar3; 
+
+		write "Fim do Programa Pasc";
+
+	}

@@ -1,0 +1,11 @@
+program Erro
+	
+	num var;
+
+	{
+		var = 2 ++ 1;
+	}
+
+
+
+

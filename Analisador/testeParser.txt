@@ -1,0 +1,14 @@
+program PasC 
+
+	char a; 
+	read testePasc;
+	
+	{
+
+		if (b > a){ 
+			write "CD"; 
+		} else if(b < a){ 
+			a = 'a';
+		};
+
+	}
