@@ -42,11 +42,13 @@ public enum Tag {
     
     //identificador
     ID,
-    
+
+
     //numeros
-    num_const,
-	INTEGER,
+    ConstInteira,
+    INTEGER,
     FLOAT,
+    ConstReal,
     
     //String em aspas simples
     //strings
@@ -55,6 +57,7 @@ public enum Tag {
     
     //String em aspas duplas
     STRING,
+    ConstString,
     
     // palavra reservada
     KW,

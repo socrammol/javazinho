@@ -433,6 +433,7 @@ public class Lexer {
                     n_Char = 0;
                     auxNegativo = Tag.STRING;
                     return new Token (Tag.STRING, lexema.toString(), n_line, n_column);
+                    
                 }
                 
                 

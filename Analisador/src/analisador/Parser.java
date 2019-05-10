@@ -74,7 +74,7 @@ public class Parser extends ParsingTable {
             }
 
 //      Contador de Erros Sintáticos (Se maior que 5, para a análise)            
-            if(qtdErrosSintaticos == 6){
+            if(qtdErrosSintaticos == 5){
                 break; // Encerra a análise sintática
             }
             
@@ -98,13 +98,19 @@ public class Parser extends ParsingTable {
         
         switch (token.getClasse()) {
             case ID:
-                token.setLexema("id");
+                token.setLexema("ID");
                 break;
             case STRING:
-                token.setLexema("string");
+                token.setLexema("ConstString");
                 break;
-            case num_const:         
-                token.setLexema("num_const");
+            case INTEGER:         
+                token.setLexema("ConstInteira");
+                break;
+            case FLOAT:
+                token.setLexema("ConstReal");
+                break;
+            case ConstString:
+                token.setLexema("ConstString");
                 break;
             default:
                 break;
