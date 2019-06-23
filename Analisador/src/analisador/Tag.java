@@ -61,6 +61,7 @@ public enum Tag {
     
     // palavra reservada
     KW,
+    KW_PUBLIC
     
       
 }

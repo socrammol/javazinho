@@ -19,6 +19,7 @@ public class Lexer {
    private static final int END_OF_FILE = -1; // contante para fim do arquivo
    private static int lookahead = 0; // armazena o último caractere lido do arquivo	
    public static int n_line = 1; // contador de linhas
+   
    public static int n_column = 1; // contador de linhas
    private RandomAccessFile instance_file; // referencia para o arquivo
    private static TS tabelaSimbolos; // tabela de simbolos
@@ -331,12 +332,12 @@ public class Lexer {
                else {
                   //estado = 18;
                   retornaPonteiro();
-                  Token token = tabelaSimbolos.retornaToken(lexema.toString());
-                  if  (token == null ){
-                      auxNegativo = Tag.ID;
-                     return new Token(Tag.ID, lexema.toString(), n_line, n_column);
-                  }
-                  return token;
+                        if (tabelaSimbolos.retornaToken(lexema.toString()) != null) {
+                            return tabelaSimbolos.retornaToken(lexema.toString());
+                        }
+                        Token token = new Token(Tag.ID, lexema.toString(), n_line, n_column);
+                        tabelaSimbolos.put(lexema.toString(), token);
+                        return token;
                   
                }
                break;

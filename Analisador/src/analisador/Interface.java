@@ -253,7 +253,7 @@ public class Interface extends javax.swing.JFrame {
             
             if(filePath.equals("")){
                 
-                textArea2.setText("ANEXE UM ARQUIVO EM PASC PARA ANÁLISE");
+                textArea2.setText("ANEXE UM ARQUIVO EM JAVAZINHO PARA ANÁLISE");
                 
             } else {
                 

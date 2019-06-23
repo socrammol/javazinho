@@ -348,7 +348,7 @@ public class ParsingTable {
         //Exp4
          {
                     "skip", "skip", "skip", "ID Exp4’", "skip", "skip",
-                    "synch", "( Expressao)", "synch", "synch", "skip",
+                    "synch", "( Expressao )", "synch", "synch", "skip",
                     "skip", "skip", "skip", "skip", "skip", "skip",
                     "skip", "skip", "skip", "skip", "skip", "skip",
                     "synch", "synch", "synch", "synch", "synch", "synch",

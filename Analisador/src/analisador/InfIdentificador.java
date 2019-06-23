@@ -7,7 +7,7 @@ package analisador;
 
 /**
  *
- * @author gustavo
+ * @author Marcos Mol
  */
 public class InfIdentificador {
     String tipo;
