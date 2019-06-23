@@ -21,49 +21,49 @@ public class TS {
 
         // Inserindo as palavras reservadas
         Token word;
-        word = new Token(Tag.KW, "public", 0, 0);
+        word = new Token(Tag.KW_public, "public", 0, 0);
         this.tabelaSimbolos.put("public", word);
         
-        word = new Token(Tag.KW, "class", 0, 0);
+        word = new Token(Tag.KW_class, "class", 0, 0);
         this.tabelaSimbolos.put("class", word);
         
-        word = new Token(Tag.KW, "print", 0, 0);
+        word = new Token(Tag.KW_print, "print", 0, 0);
         this.tabelaSimbolos.put("print", word);
         
-        word = new Token(Tag.KW, "println", 0, 0);
+        word = new Token(Tag.KW_println, "println", 0, 0);
         this.tabelaSimbolos.put("println", word);
         
-        word = new Token(Tag.KW, "int", 0, 0);
+        word = new Token(Tag.KW_int, "int", 0, 0);
         this.tabelaSimbolos.put("int", word);
 
-        word = new Token(Tag.KW, "float", 0, 0);
+        word = new Token(Tag.KW_float, "float", 0, 0);
         this.tabelaSimbolos.put("float", word);
         
-        word = new Token(Tag.KW, "string", 0, 0);
+        word = new Token(Tag.KW_string, "string", 0, 0);
         this.tabelaSimbolos.put("string", word);
         
-        word = new Token(Tag.KW, "boolean", 0, 0);
+        word = new Token(Tag.KW_boolean, "boolean", 0, 0);
         this.tabelaSimbolos.put("boolean", word);
         
-        word = new Token(Tag.KW, "static", 0, 0);
+        word = new Token(Tag.KW_static, "static", 0, 0);
         this.tabelaSimbolos.put("static", word);
         
-        word = new Token(Tag.KW, "void", 0, 0);
+        word = new Token(Tag.KW_void, "void", 0, 0);
         this.tabelaSimbolos.put("void", word);
         
-        word = new Token(Tag.KW, "main", 0, 0);
+        word = new Token(Tag.KW_main, "main", 0, 0);
         this.tabelaSimbolos.put("main", word);
         
-        word = new Token(Tag.KW, "return", 0, 0);
+        word = new Token(Tag.KW_return, "return", 0, 0);
         this.tabelaSimbolos.put("return", word);
         
-        word = new Token(Tag.KW, "while", 0, 0);
+        word = new Token(Tag.KW_while, "while", 0, 0);
         this.tabelaSimbolos.put("while", word);
         
-        word = new Token(Tag.KW, "if", 0, 0);
+        word = new Token(Tag.KW_if, "if", 0, 0);
         this.tabelaSimbolos.put("if", word);
         
-        word = new Token(Tag.KW, "else", 0, 0);
+        word = new Token(Tag.KW_else, "else", 0, 0);
         this.tabelaSimbolos.put("else", word);
         
         word = new Token(Tag.KW, "true", 0, 0);

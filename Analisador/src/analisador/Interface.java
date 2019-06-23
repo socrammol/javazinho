@@ -31,13 +31,13 @@ public class Interface extends javax.swing.JFrame {
     // metodo executar
     public void executar(String filePath) throws Exception { 
        
-        Lexer lexer = new Lexer(tabelaSimbolos, filePath);
+        Lexer lexer = new Lexer(filePath);
         
         // Analise Léxica
         lexer.leituraArquivoToken(textArea2);
         
         // Novo Lexer para a Análise Sintática (Reinicio da leitura do Arquivo
-        Lexer newlexer = new Lexer(tabelaSimbolos, filePath);
+        Lexer newlexer = new Lexer(filePath);
          
         // Análise Sintática
         Parser parser = new Parser(newlexer, textArea3);

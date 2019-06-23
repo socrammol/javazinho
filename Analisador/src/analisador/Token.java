@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package analisador;
 
 /**
@@ -10,44 +5,43 @@ package analisador;
  * @author gustavo
  */
 public class Token {
-    
-    private String lexema;
-    private Tag classe;
-    private int linha;
-    private int coluna;
+   
+   private String lexema;
+   private Tag classe;
+   private int linha;
+   private int coluna;
+   private int tipo; // novo atributo de um token
 	
-    public Token(Tag classe, String lexema, int linha, int coluna) {
+   public Token(Tag classe, String lexema, int linha, int coluna) {
 
-        this.classe = classe;
-        this.lexema = lexema;
-        this.linha = linha;
-        this.coluna = coluna;
-        
-    }
+      this.classe = classe;
+      this.lexema = lexema;
+      this.linha = linha;
+      this.coluna = coluna;
+      tipo = No.TIPO_VAZIO;
+   }
 	
-    public Tag getClasse() {
+   public Tag getClasse() {
+       return classe;
+   }
+	
+   public void setClasse(Tag classe) {
+       this.classe = classe;
+   }
+	
+   public String getLexema() {
+	
+		return lexema;
+   }
+	
+   public void setLexema(String lexema) {
 		
-	return classe;
-}
-	
-    public void setClasse(Tag classe) {
-		
-	this.classe = classe;
-    }
-	
-    public String getLexema() {
-	
-	return lexema;
-    }
-	
-    public void setLexema(String lexema) {
-		
-	this.lexema = lexema;
-    }
+		this.lexema = lexema;
+   }
     
-    public int getLinha() {
-        return linha;
-    }
+   public int getLinha() {
+  		return linha;
+   }
 
     public void setLinha(int linha) {
         this.linha = linha;
@@ -61,8 +55,16 @@ public class Token {
         this.coluna = coluna;
     }
     
+    public int getTipo() {
+        return tipo;
+    }
+    
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+    
     @Override
     public String toString() {
-        return "<" + classe + ", \"" + lexema + "\">";
+        return "<" + classe + ", \"" + lexema + "\">, tipo: " + tipo + " linha: " + linha + " coluna: " + coluna + "";
     }
 }

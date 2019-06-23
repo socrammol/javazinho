@@ -13,14 +13,15 @@ public class No {
     private Token pai;
     private final ArrayList<No> listaFilhos;
     private static int espaco = 0;
-
+   
     // Constantes para tipos
     public static Integer TIPO_VAZIO	= 111;
     public static Integer TIPO_BOOLEAN  = 100;
     public static Integer TIPO_INT      = 101;
     public static Integer TIPO_STRING	= 102;
-    public static Integer TIPO_DOUBLE	= 103;
+    public static Integer TIPO_FLOAT	= 103;
     public static Integer TIPO_ERRO	= 104;
+    public static Integer TIPO_NUMERICO	= 105;
     
     public int tipo = TIPO_VAZIO;
     
@@ -37,7 +38,7 @@ public class No {
     public void setPai(Token token) {
         this.pai = token;
     }
-
+    
     public ArrayList<No> getFilhos() {
         return listaFilhos;
     }

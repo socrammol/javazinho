@@ -4,12 +4,15 @@
  * and open the template in the editor.
  */
 package analisador;
+import static analisador.Lexer.tabelaSimbolos;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -62,7 +65,11 @@ public class Parser extends ParsingTable {
     public boolean skip = false;
     
     public int qtdErrosSintaticos = 0;
-    
+    public void erroSemantico(String mensagem, Token token) {
+
+        System.out.print("[Erro Semantico] na linha " + token.getLinha() + " e coluna " + token.getColuna() + ": ");
+        System.out.println(mensagem + "\n");
+    }
     public Parser(Lexer lexer, javax.swing.JTextArea txA3){
         this.lexer = lexer;
         this.token = lexer.proxToken();
@@ -166,15 +173,15 @@ public class Parser extends ParsingTable {
                 splitRegra = regra.split("\\s+");
                 List lista = Arrays.asList(splitRegra);
                 ArrayList Aux = new ArrayList(lista);
-                Aux.add(3,const1);
+                Aux.add(2,const1);
                 splitRegra=(String[])Aux.toArray(new String[Aux.size()]);
                resultadoParser += regra + "\n";
                 break;
-            case "Tipo ID":
+            case "Tipo ID ;":
                 splitRegra = regra.split("\\s+");
                 lista = Arrays.asList(splitRegra);
                 Aux = new ArrayList(lista);
-                Aux.add(2,const2);
+                Aux.add(1,const2);
                 splitRegra=(String[])Aux.toArray(new String[Aux.size()]);
                resultadoParser += regra + "\n";
                 break;
@@ -551,12 +558,245 @@ public class Parser extends ParsingTable {
     
     // Desempilha elemento do topo
     private String pop(){
-        System.out.println("regra1:" + this.pilha);
+        //System.out.println("regra1:" + this.pilha);
         String s = this.pilha.lastElement();
+        Token t = this.token; // salva ID esperado em t
+        Token id = lexer.tabelaSimbolos.retornaToken(t.getLexema());
+        No DeclaracaoVar = new No(null);
+        No noVar = new No(null);
+        No noClasse = new No(null);
+        No noListaVar = new No(null);
+        No noListaCmd = new No(null);
+        No noTipo = new No (null);
         switch(s) {
-            case "const_1":
-                
+            case "const_1": 
+                noClasse = new No(null);
+                //{TS.setTipo(ID.lexval, vazio)}
+                if(id != null) {
+                    t.setTipo(No.TIPO_ERRO);
+                    erroSemantico("Declaracao duplicada da variavel " + t.getLexema(), t);
+                }else{
+                    t.setTipo(No.TIPO_VAZIO); //  tipo do ID (nome do programa) sera VAZIO
+                    lexer.tabelaSimbolos.put(t.getLexema(), t);
+                }    
+                if (noListaVar.tipo != No.TIPO_ERRO && noListaCmd.tipo == No.TIPO_VAZIO) {
+         	noClasse.tipo = No.TIPO_VAZIO;
+                } else {
+                       noClasse.tipo = No.TIPO_ERRO;
+                }
+                Collections.reverse(noListaCmd.getFilhos());
+                noClasse.setPai(t);
+                noClasse.addFilho(noListaCmd);
+                noListaVar = noVar;
+               break;
+            case "const_2":
+                DeclaracaoVar = new No(null);
+                noVar = new No(null);
+                    switch (token.getClasse()){
+                        case INTEGER:
+                            noTipo = new No (null);
+                            noTipo.setPai(t);
+                            noTipo.tipo = No.TIPO_INT;
+                            t = this.token;
+                            if(id != null) {
+                                noVar.tipo = No.TIPO_ERRO;
+                                erroSemantico("Declaracao duplicada da variavel " + t.getLexema(), t);
+                            }else {
+                                // cadastra novo ID na TS e atualiza o tipo
+                                noVar.tipo = noTipo.tipo;
+                                t.setTipo(noTipo.tipo);
+                                lexer.tabelaSimbolos.put(t.getLexema(), t);
+                            }
+                            noVar.setPai(t);
+                            Collections.reverse(noListaVar.getFilhos()); // Apenas para reverter a ordem dos filhos.
+                            noVar.addFilho(noListaVar);
+                            break;
+                        case FLOAT:
+                            noTipo = new No (null);
+                            noTipo.setPai(t);
+                            noTipo.tipo = No.TIPO_FLOAT;
+                            t = this.token;
+                            if(id != null) {
+                                noVar.tipo = No.TIPO_ERRO;
+                                erroSemantico("Declaracao duplicada da variavel " + t.getLexema(), t);
+                            }else {
+                                // cadastra novo ID na TS e atualiza o tipo
+                                noVar.tipo = noTipo.tipo;
+                                t.setTipo(noTipo.tipo);
+                                lexer.tabelaSimbolos.put(t.getLexema(), t);
+                            }
+                            noVar.setPai(t);
+                            Collections.reverse(noListaVar.getFilhos()); // Apenas para reverter a ordem dos filhos.
+                            noVar.addFilho(noListaVar);
+                            break;
+                        case STRING:
+                              noTipo = new No (null);
+                            noTipo.setPai(t);
+                            noTipo.tipo = No.TIPO_FLOAT;
+                            t = this.token;
+                            if(id != null) {
+                                noVar.tipo = No.TIPO_ERRO;
+                                erroSemantico("Declaracao duplicada da variavel " + t.getLexema(), t);
+                            }else {
+                                // cadastra novo ID na TS e atualiza o tipo
+                                noVar.tipo = noTipo.tipo;
+                                t.setTipo(noTipo.tipo);
+                                lexer.tabelaSimbolos.put(t.getLexema(), t);
+                            }
+                            noVar.setPai(t);
+                            Collections.reverse(noListaVar.getFilhos()); // Apenas para reverter a ordem dos filhos.
+                            noVar.addFilho(noListaVar);
+                            break;
+                        }
+            break;/*
+                case "const_3":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_4":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
             break;
+                  No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_5":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+            break;
+                case "const_6":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_7":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+            break;
+               case "const_8":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_9":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+            break;
+                case "const_10":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_11":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+            break;
+                  No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_12":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+            break;
+                case "const_13":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_14":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+            break;
+            
+            case "const_15":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_16":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+            break;
+                case "const_17":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_18":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+            break;
+                  No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_19":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+            break;
+                case "const_20":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_21":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+            break;
+               case "const_22":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_23":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+            break;
+                case "const_24":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_25":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+            break;
+                  No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_26":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+            break;
+                case "const_27":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+               break;
+            case "const_28":
+                No classe = new No(null);
+                Token t = this.token;
+                lexer.tabelaSimbolos.put(t.getLexema(), t);
+            break;*/
+
         }
         return this.pilha.pop();
     

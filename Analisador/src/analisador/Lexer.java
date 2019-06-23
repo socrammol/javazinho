@@ -22,17 +22,17 @@ public class Lexer {
    
    public static int n_column = 1; // contador de linhas
    private RandomAccessFile instance_file; // referencia para o arquivo
-   private static TS tabelaSimbolos; // tabela de simbolos
+   public static TS tabelaSimbolos; // tabela de simbolos
    private javax.swing.JTextArea textArea1;
    private javax.swing.JTextArea textArea2;
    public String resultado = "";
    public String resultadoLinhasColunas = "";
    
-    public Lexer(TS tS, String input_data) {
+    public Lexer(String input_data) {
         
-        this.tabelaSimbolos = tS;
+        //this.tabelaSimbolos = tS;
         
-        tabelaSimbolos = new TS();
+        //tabelaSimbolos = new TS();
 		
       // Abre instance_file de input_data
       	
@@ -48,7 +48,14 @@ public class Lexer {
             System.out.println("Erro do programa ou falha da tabela de simbolos\n" + e);
             System.exit(2);
 	}
+        tabelaSimbolos = new TS(); // tabela de simbolos
     }
+    public void printTS() {
+      System.out.println("");
+      System.out.println("--------Tabela de Simbolos--------");
+      System.out.println(tabelaSimbolos.toString());  
+      System.out.println();
+   }
    // Fecha instance_file de input_data
     public void fechaArquivo() {
 
@@ -484,9 +491,9 @@ public class Lexer {
             // Imprime token
 	    if(token != null ) {
                 
-                System.out.println("Token: " + token.toString() + "\t\t Linha: " + n_line + "\t Coluna: " + n_column);
+                System.out.println("Token: " + token.toString() + "\t\t Linha: " + n_line + "\t Coluna: " + n_column );
                 
-                resultado += "Token: " + token.toString() + "\t Linha: " + n_line + "\t Coluna: " + n_column + "\n";
+                resultado += "Token: " + token.toString() + "\t Linha: " + n_line + "\t Coluna: " + n_column + "\n" ;
                 
 //                resultadoLinhasColunas += "Linha: " + n_line + " Coluna: " + n_column + "\n";
                     

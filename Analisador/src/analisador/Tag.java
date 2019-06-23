@@ -59,9 +59,26 @@ public enum Tag {
     STRING,
     ConstString,
     
-    // palavra reservada
-    KW,
-    KW_PUBLIC
+   // palavra reservada
+    KW_public,
+    KW_class,
+    KW_SystemOutDispln,
+    KW_end,
+    KW_integer,
+    KW_string,
+    KW_print,
+    KW_println,
+    KW_static,
+    KW_return,
+    KW_else,
+    KW_while,
+    KW_int,
+    KW_float,
+    KW_void,
+    KW_boolean,
+    KW_if,
+    KW_main,
+    KW;
     
       
 }
